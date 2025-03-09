@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main  # Or use 'master', or any branch you want to trigger the workflow on
+
+jobs:
+  build:
+    runs-on: ubuntu:latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run script
+        run: docker-mod/create_and_run_dockers.sh -p projects.csv -jc /Scratch/custom.jfc -r
+
+      - name: Upload generated files as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: results                   # Name for the artifact
+          path: results-java/             # Path to the directory
