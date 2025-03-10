@@ -78,7 +78,7 @@ date
 # Create base Docker image if it does not exist
 docker inspect runtimeprofiler-$java_ver:latest > /dev/null 2>&1
 if [ $? == 1 ]; then
-    sed -i '.bak' -e "s/JAVA_VER/$java_ver/g" baseDockerFile
+    sed -i.bak -e "s/JAVA_VER/$java_ver/g" baseDockerFile
     docker build -t runtimeprofiler-$java_ver:latest -f baseDockerFile .
     rm baseDockerFile
     mv baseDockerFile.bak baseDockerFile
