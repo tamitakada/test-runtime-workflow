@@ -1,0 +1,59 @@
+# Pull base Ubuntu image
+FROM ubuntu:20.04
+
+# Install sofware properties common
+RUN \
+  apt-get update && \
+  apt-get install -y software-properties-common && \
+# Install Java 
+  apt-get update && \
+  apt-get install -y openjdk-8-jdk && \
+  apt-get install -y openjdk-11-jdk && \
+  apt-get install -y openjdk-17-jdk && \
+# Install git
+  apt-get install -y git && \
+  git --version && \
+# Install python
+  apt-get update && \
+  apt-get install -y python3 python3-dev python3-pip python3-venv && \
+  rm -rf /var/lib/apt/lists/* && \
+# Install numpy using pip3
+  pip3 install numpy && \
+  pip3 install scipy && \
+# Install misc
+  apt-get update && \
+  apt-get install -y sudo && \
+  apt-get install -y vim && \
+  apt-get install -y wget
+
+# Use openJDK11 as default
+ENV JAVA_HOME=/usr/lib/jvm/java-JAVA_VER-openjdk-amd64/
+ENV JAVA_8_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+ENV JAVA_11_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+ENV JAVA_17_HOME=/usr/lib/jvm/java-17-openjdk-amd64/
+
+# Set up user
+RUN useradd -ms /bin/bash -c "runtimeprofiler" runtimeprofiler && echo "runtimeprofiler:docker" | chpasswd && adduser runtimeprofiler sudo
+USER runtimeprofiler
+
+WORKDIR /home/runtimeprofiler/
+
+# Install Maven 3.8.3 locally for user
+RUN \
+  wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.3/apache-maven-3.8.3-bin.tar.gz && \
+  tar -xzf apache-maven-3.8.3-bin.tar.gz && mv apache-maven-3.8.3/ apache-maven/ && \
+  echo 'export JAVA_HOME=/usr/lib/jvm/java-JAVA_VER-openjdk-amd64/' >> ~/.bashrc && \
+  echo 'export M2_HOME=${HOME}/apache-maven' >> ~/.bashrc && \
+  echo 'export MAVEN_HOME=${HOME}/apache-maven' >> ~/.bashrc && \
+  echo 'export PATH=${M2_HOME}/bin:${PATH}' >> ~/.bashrc && \
+  echo "alias python=python3" >> ~/.bashrc
+  
+USER root
+
+RUN mkdir -p /home/listener/output/logs/plainText
+RUN mkdir -p /home/listener/output/logs/csv
+RUN mkdir -p /tmp/log
+
+ADD MavenMyListener MavenMyListener
+RUN chmod -R 777 MavenMyListener
+RUN chmod -R 777 /home/listener
