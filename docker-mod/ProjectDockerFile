@@ -27,10 +27,10 @@ RUN \
   apt-get install -y wget
 
 # Use openJDK11 as default
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-arm64/
-ENV JAVA_8_HOME=/usr/lib/jvm/java-8-openjdk-arm64/
-ENV JAVA_11_HOME=/usr/lib/jvm/java-11-openjdk-arm64/
-ENV JAVA_17_HOME=/usr/lib/jvm/java-17-openjdk-arm64/
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+ENV JAVA_8_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+ENV JAVA_11_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+ENV JAVA_17_HOME=/usr/lib/jvm/java-17-openjdk-amd64/
 
 # Set up user
 RUN useradd -ms /bin/bash -c "runtimeprofiler" runtimeprofiler && echo "runtimeprofiler:docker" | chpasswd && adduser runtimeprofiler sudo
@@ -42,7 +42,7 @@ WORKDIR /home/runtimeprofiler/
 RUN \
   wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/3.8.3/apache-maven-3.8.3-bin.tar.gz && \
   tar -xzf apache-maven-3.8.3-bin.tar.gz && mv apache-maven-3.8.3/ apache-maven/ && \
-  echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-arm64/' >> ~/.bashrc && \
+  echo 'export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/' >> ~/.bashrc && \
   echo 'export M2_HOME=${HOME}/apache-maven' >> ~/.bashrc && \
   echo 'export MAVEN_HOME=${HOME}/apache-maven' >> ~/.bashrc && \
   echo 'export PATH=${M2_HOME}/bin:${PATH}' >> ~/.bashrc && \
