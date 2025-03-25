@@ -1,0 +1,8 @@
+parser/JFRParser.class
+parser/StatsTests.class
+parser/StatsProcessor.class
+parser/TestMethodData.class
+parser/JFRParser$JFRSummary.class
+parser/TestClassData.class
+parser/StatsProcessor$AverageTestClassData.class
+parser/Utils.class
